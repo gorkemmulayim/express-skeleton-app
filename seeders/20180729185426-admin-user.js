@@ -4,7 +4,7 @@ var bcrypt = require('bcrypt');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-      return queryInterface.bulkInsert('Users', [{
+      return queryInterface.bulkInsert('User', [{
           username: 'admin',
           password: '$2b$10$g.Sb45WVVDLGAaxiektV7eLjvKxN3xK3IK1N3I755onJ7rgFxkeiO'
       }], {});

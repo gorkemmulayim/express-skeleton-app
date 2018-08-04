@@ -28,7 +28,7 @@ app.use('/users', usersRouter);
 var sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
 var sequelizeStore = new SequelizeStore({
   db: sequelize,
-  checkExpirationInterval: 60 * 1000,
+  checkExpirationInterval: 10 * 60 * 1000,
   expiration: 60 * 60 * 1000
 });
 sequelizeStore.sync();
