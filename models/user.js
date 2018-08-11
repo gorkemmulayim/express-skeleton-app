@@ -32,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
   });
-  User.checkPassword = function (password) {
-    return bcrypt.compareSync(password, this.password);
+  User.prototype.checkPassword = function (password) {
+    return password !== undefined && bcrypt.compareSync(password, this.password);
   };
   return User;
 };

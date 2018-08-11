@@ -14,11 +14,9 @@ module.exports = {
         username: req.body.username
       }
     }).then(function (user) {
-      console.log(User);
-      if (!user) {
+      if (!user || !user.checkPassword(req.body.password)) {
         res.redirect('/');
       } else {
-        console.log(User.checkPassword(req.body.password));
         res.send("ok");
       }
     });
