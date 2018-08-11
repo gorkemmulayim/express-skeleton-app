@@ -5,7 +5,10 @@ var sequelize = new Sequelize(config[process.env.NODE_ENV]);
 var User = require('../models/user')(sequelize, DataTypes);
 
 module.exports = {
-  login(req, res, next) {
+  getSignIn(req, res, next) {
+    res.render('signin');
+  },
+  postSignIn(req, res, next) {
     return User.find({
       where: {
         username: req.body.username
