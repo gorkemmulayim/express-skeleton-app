@@ -1,5 +1,4 @@
-var logger = require('morgan');
-var Sequelize = require('sequelize')
+var Sequelize = require('sequelize');
 
 module.exports = {
   development: {
@@ -23,4 +22,4 @@ module.exports = {
     storage: 'production.sqlite',
     operatorsAliases: Sequelize.Op
   }
-}
+};
