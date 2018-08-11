@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var hbs = require('hbs');
 var multer = require('multer');
 var path = require('path');
 var logger = require('morgan');
@@ -39,7 +40,8 @@ app.use(session({
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'hbs');
+hbs.registerPartials(path.join(__dirname, 'views'));
 
 app.use(logger('dev'));
 app.use(express.json());
