@@ -1,31 +1,20 @@
 var createError = require('http-errors');
 var express = require('express');
+var multer = require('multer');
 var path = require('path');
 var logger = require('morgan');
 
-var session = require('express-session')
-var Sequelize = require('sequelize')
+var session = require('express-session');
+var Sequelize = require('sequelize');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
 var config = require('./config/config');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var userRouter = require('./routes/user');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-var sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
+var sequelize = new Sequelize(config[process.env.NODE_ENV]);
 var sequelizeStore = new SequelizeStore({
   db: sequelize,
   checkExpirationInterval: 10 * 60 * 1000,
@@ -38,7 +27,7 @@ app.use(session({
     secure: true
   },
   genid: function(req) {
-    return genuuid()
+    return require('crypto').randomBytes(64).toString('hex');
   },
   proxy: true,
   resave: false,
@@ -46,7 +35,20 @@ app.use(session({
   secret: require('crypto').randomBytes(64).toString('hex'),
   store: sequelizeStore,
   unset: 'destroy'
-}))
+}));
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(multer().array());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
