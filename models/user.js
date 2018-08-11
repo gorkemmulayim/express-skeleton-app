@@ -6,18 +6,10 @@ module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('user', {
     username: {
       primaryKey: true,
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      type: DataTypes.STRING
     },
     password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true
-      }
+      type: DataTypes.STRING
     },
   }, {
     tableName: 'user',
