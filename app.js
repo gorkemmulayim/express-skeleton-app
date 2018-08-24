@@ -32,7 +32,7 @@ app.use(session({
   cookie: {
     expires: 60 * 60 * 1000
   },
-  genid: function() {
+  genid: function () {
     return crypto.randomBytes(64).toString('hex');
   },
   proxy: true,
@@ -50,17 +50,18 @@ app.use((req, res, next) => {
   next();
 });
 
-var sessionChecker = (req, res, next) => {
-  if (req.session.user && req.cookies.user_sid) {
-    res.redirect('/');
-  } else {
-    next();
+const sessionChecker = (req, res, next) => {
+  if (req.session.user != null) {
+    if (req.originalUrl === '/signin' || req.originalUrl === '/user/signin') {
+      return res.redirect('/');
+    }
+    return next();
   }
+  if (req.originalUrl === '/signin' || req.originalUrl === '/user/signin') {
+    return next();
+  }
+  return res.redirect('/signin');
 };
-
-app.get('/', sessionChecker, (req, res, next) => {
-  res.redirect('/signin');
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -70,7 +71,7 @@ app.use(flash());
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(multer().array());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
@@ -78,11 +79,11 @@ app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use(express.static(path.join(__dirname, 'node_modules/jquery/dist')));
 app.use(express.static(path.join(__dirname, 'node_modules/popper.js/dist')));
 
-app.use('/', indexRouter);
-app.use('/user', userRouter);
+app.use('/', sessionChecker, indexRouter);
+app.use('/user', sessionChecker, userRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
@@ -92,7 +93,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
