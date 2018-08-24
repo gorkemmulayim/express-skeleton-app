@@ -6,7 +6,7 @@ const User = require('../models/user')(sequelize, DataTypes);
 
 module.exports = {
   getSignIn(req, res, next) {
-    res.render('signin', { message: req.flash('error') });
+    res.render('signin', {message: req.flash('error')});
   },
   postSignIn(req, res, next) {
     return User.find({
@@ -15,11 +15,11 @@ module.exports = {
       }
     }).then(function (user) {
       if (!user || !user.checkPassword(req.body.password)) {
+        req.flash('error', [{msg: 'Username or password is invalid!'}]);
         res.redirect('signin');
-      } else {
-        req.session.user = user.dataValues;
-        res.send("ok");
       }
+      req.session.user = user.dataValues;
+      res.redirect("/");
     });
   }
 };

@@ -1,9 +1,9 @@
 'use strict';
 
-var bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
-  var User = sequelize.define('user', {
+  const User = sequelize.define('user', {
     username: {
       primaryKey: true,
       type: DataTypes.STRING

@@ -1,25 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var hbs = require('hbs');
-var flash = require('connect-flash');
-var crypto = require('crypto');
-var multer = require('multer');
-var path = require('path');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const hbs = require('hbs');
+const flash = require('connect-flash');
+const crypto = require('crypto');
+const multer = require('multer');
+const path = require('path');
+const logger = require('morgan');
 
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
-var Sequelize = require('sequelize');
-var SequelizeStore = require('connect-session-sequelize')(session.Store);
-var config = require('./config/config');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const Sequelize = require('sequelize');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const config = require('./config/config');
 
-var indexRouter = require('./routes/index');
-var userRouter = require('./routes/user');
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
 
-var app = express();
+const app = express();
 
-var sequelize = new Sequelize(config[process.env.NODE_ENV]);
-var sequelizeStore = new SequelizeStore({
+const sequelize = new Sequelize(config[process.env.NODE_ENV]);
+const sequelizeStore = new SequelizeStore({
   db: sequelize,
   checkExpirationInterval: 10 * 60 * 1000,
   expiration: 60 * 60 * 1000

@@ -7,18 +7,16 @@ router.get('/signin', userController.getSignIn);
 
 router.post('/signin', [
   body('username')
-      .not().isEmpty().withMessage('Username can not be empty.'),
+      .trim().not().isEmpty().withMessage('Username field can not be empty!'),
   body('password')
-      .trim()
-      .not().isEmpty().withMessage('Password can not be empty.'),
+      .trim().not().isEmpty().withMessage('Password field can not be empty!'),
 ], (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     req.flash('error', errors.array());
     return res.redirect('signin');
-  } else {
-    next();
   }
+  next();
 }, userController.postSignIn);
 
 module.exports = router;
