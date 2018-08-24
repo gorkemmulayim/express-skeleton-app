@@ -1,8 +1,8 @@
-var Sequelize = require('sequelize');
-var config = require('../config/config');
-var DataTypes = Sequelize.DataTypes;
-var sequelize = new Sequelize(config[process.env.NODE_ENV]);
-var User = require('../models/user')(sequelize, DataTypes);
+const Sequelize = require('sequelize');
+const config = require('../config/config');
+const DataTypes = Sequelize.DataTypes;
+const sequelize = new Sequelize(config[process.env.NODE_ENV]);
+const User = require('../models/user')(sequelize, DataTypes);
 
 module.exports = {
   getSignIn(req, res, next) {
