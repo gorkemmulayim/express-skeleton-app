@@ -15,8 +15,9 @@ module.exports = {
       }
     }).then(function (user) {
       if (!user || !user.checkPassword(req.body.password)) {
-        res.redirect('/');
+        res.redirect('signin');
       } else {
+        req.session.user = user.dataValues;
         res.send("ok");
       }
     });

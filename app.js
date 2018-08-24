@@ -1,10 +1,12 @@
 var createError = require('http-errors');
 var express = require('express');
 var hbs = require('hbs');
+var crypto = require('crypto');
 var multer = require('multer');
 var path = require('path');
 var logger = require('morgan');
 
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var Sequelize = require('sequelize');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
@@ -23,12 +25,14 @@ var sequelizeStore = new SequelizeStore({
 });
 sequelizeStore.sync();
 
+app.use(cookieParser());
 app.use(session({
+  key: 'user_sid',
   cookie: {
-    secure: true
+    expires: 60 * 60 * 1000
   },
-  genid: function(req) {
-    return require('crypto').randomBytes(64).toString('hex');
+  genid: function() {
+    return crypto.randomBytes(64).toString('hex');
   },
   proxy: true,
   resave: false,
@@ -37,6 +41,25 @@ app.use(session({
   store: sequelizeStore,
   unset: 'destroy'
 }));
+
+app.use((req, res, next) => {
+  if (req.cookies.user_sid && !req.session.user) {
+    res.clearCookie('user_sid');
+  }
+  next();
+});
+
+var sessionChecker = (req, res, next) => {
+  if (req.session.user && req.cookies.user_sid) {
+    res.redirect('/');
+  } else {
+    next();
+  }
+};
+
+app.get('/', sessionChecker, (req, res, next) => {
+  res.redirect('/signin');
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
