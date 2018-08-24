@@ -13,9 +13,9 @@ router.post('/signin', [
       .not().isEmpty().withMessage('Password can not be empty.'),
 ], (req, res, next) => {
   const errors = validationResult(req);
-  console.log(errors.array());
   if (!errors.isEmpty()) {
-    res.redirect('signin');
+    req.flash('error', errors.array());
+    return res.redirect('signin');
   } else {
     next();
   }

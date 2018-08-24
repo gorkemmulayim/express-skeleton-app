@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var hbs = require('hbs');
+var flash = require('connect-flash');
 var crypto = require('crypto');
 var multer = require('multer');
 var path = require('path');
@@ -65,13 +66,17 @@ app.get('/', sessionChecker, (req, res, next) => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname, 'views'));
+app.use(flash());
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(multer().array());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
+app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
+app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
+app.use(express.static(path.join(__dirname, 'node_modules/jquery/dist')));
+app.use(express.static(path.join(__dirname, 'node_modules/popper.js/dist')));
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
@@ -79,6 +84,11 @@ app.use('/user', userRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
+});
+
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
 });
 
 // error handler

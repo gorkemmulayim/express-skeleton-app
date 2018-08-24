@@ -6,7 +6,7 @@ const User = require('../models/user')(sequelize, DataTypes);
 
 module.exports = {
   getSignIn(req, res, next) {
-    res.render('signin');
+    res.render('signin', { message: req.flash('error') });
   },
   postSignIn(req, res, next) {
     return User.find({
