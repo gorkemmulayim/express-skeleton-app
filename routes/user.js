@@ -14,7 +14,7 @@ router.post('/signin', [
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     req.flash('error', errors.array());
-    return res.redirect('signin');
+    return res.render('signin', {message: req.flash('error'), username: req.body.username, layout: false});
   }
   next();
 }, userController.postSignIn);

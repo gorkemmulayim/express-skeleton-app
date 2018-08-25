@@ -18,7 +18,7 @@ const userRouter = require('./routes/user');
 
 const app = express();
 
-const sequelize = new Sequelize(config[process.env.NODE_ENV]);
+const sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
 const sequelizeStore = new SequelizeStore({
   db: sequelize,
   checkExpirationInterval: 10 * 60 * 1000,
@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 });
 
 const sessionChecker = (req, res, next) => {
-  if (req.session.user != null) {
+  if (req.session.user) {
     if (req.originalUrl === '/signin' || req.originalUrl === '/user/signin') {
       return res.redirect('/');
     }
@@ -66,7 +66,7 @@ const sessionChecker = (req, res, next) => {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.set('view options', { layout: 'layout' });
+app.set('view options', {layout: 'layout'});
 hbs.registerPartials(path.join(__dirname, '/views'));
 app.use(flash());
 
