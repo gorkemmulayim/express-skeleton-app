@@ -18,19 +18,27 @@
     <div class="row justify-content-center align-items-center h-100">
         <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
             <form class="form" method="POST">
-                <label for="inputCurrentPassword" class="sr-only">Current Password</label>
-                <input type="password" name="currentPassword" id="inputCurrentPassword"
-                       class="form-control form-control-lg form-current-password"
-                       placeholder="Current Password" autofocus>
-                <label for="inputNewPassword" class="sr-only">Current Password</label>
+                <label for="inputOldPassword" class="sr-only">Old Password</label>
+                <input type="password" name="oldPassword" id="inputOldPassword"
+                       class="form-control form-old-password"
+                       placeholder="Old Password" autofocus>
+                <label for="inputNewPassword" class="sr-only">New Password</label>
                 <input type="password" name="newPassword" id="inputNewPassword"
-                       class="form-control form-control-lg form-new-password"
+                       class="form-control form-new-password"
                        placeholder="New Password" autofocus>
-                <label for="inputConfirmNewPassword" class="sr-only">Current Password</label>
+                <label for="inputConfirmNewPassword" class="sr-only">Confirm New Password</label>
                 <input type="password" name="confirmNewPassword" id="inputConfirmNewPassword"
-                       class="form-control form-control-lg form-confirm-new-password"
+                       class="form-control form-confirm-new-password"
                        placeholder="Confirm New Password" autofocus>
-                <button class="btn btn-info btn-lg btn-block">Update password</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Update password</button>
+                {{#each messages}}
+                    <div class="alert alert-{{this.type}} alert-dismissible fade show" role="alert">
+                        {{this.message}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {{/each}}
             </form>
         </div>
     </div>

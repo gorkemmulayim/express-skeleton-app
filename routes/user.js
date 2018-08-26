@@ -11,15 +11,41 @@ router.post('/signin', [
   body('password')
       .trim().not().isEmpty().withMessage('Password field can not be empty!'),
 ], (req, res, next) => {
-  const errors = validationResult(req);
+  let errors = validationResult(req);
   if (!errors.isEmpty()) {
-    req.flash('error', errors.array());
-    return res.render('signin', {message: req.flash('error'), username: req.body.username});
+    let messages = errors.array();
+    messages.forEach(function (message) {
+      message['message'] = message['msg'];
+      delete message['msg'];
+      message.type = 'danger';
+    });
+    return res.render('signin', {messages: messages, username: req.body.username});
   }
   next();
 }, userController.postSignIn);
 
 
 router.get('/:username', userController.getUser);
+
+router.post('/:username', [
+  body('oldPassword')
+      .trim().not().isEmpty().withMessage('Old password field can not be empty!'),
+  body('newPassword')
+      .trim().not().isEmpty().withMessage('New password field can not be empty!'),
+  body('confirmNewPassword')
+      .trim().not().isEmpty().withMessage('Confirm new password field can not be empty!'),
+], (req, res, next) => {
+  let errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let messages = errors.array();
+    messages.forEach(function (message) {
+      message['message'] = message['msg'];
+      delete message['msg'];
+      message.type = 'danger';
+    });
+    return res.render('user', {messages: errors.array()});
+  }
+  next();
+}, userController.postUser);
 
 module.exports = router;

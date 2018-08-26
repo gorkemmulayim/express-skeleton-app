@@ -19,10 +19,10 @@ body {
 }
 
 .form .form-control:focus {
-    z-index: 2;
+    z-index: 3;
 }
 
-.form-current-password {
+.form-old-password {
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
@@ -37,4 +37,14 @@ body {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+
+.btn {
+    margin-bottom: 10px;
+}
+
+.alert {
+    margin: 0px;
+    border-radius: 0;
+    font-size: 12px;
 }

@@ -43,3 +43,13 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+.btn {
+    margin-bottom: 10px;
+}
+
+.alert {
+    margin: 0px;
+    border-radius: 0;
+    font-size: 12px;
+}

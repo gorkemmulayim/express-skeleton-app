@@ -1,7 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
 const hbs = require('hbs');
-const flash = require('connect-flash');
 const crypto = require('crypto');
 const multer = require('multer');
 const path = require('path');
@@ -74,7 +73,6 @@ const sessionChecker = (req, res, next) => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname, '/views'));
-app.use(flash());
 
 app.use(logger('dev'));
 app.use(express.json());
