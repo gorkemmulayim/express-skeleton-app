@@ -43,6 +43,13 @@ app.use(session({
   unset: 'destroy'
 }));
 
+app.use(function (req, res, next) {
+  if (req.session.user) {
+    res.locals.user = req.session.user;
+  }
+  next();
+});
+
 app.use((req, res, next) => {
   if (req.cookies.user_sid && !req.session.user) {
     res.clearCookie('user_sid');
@@ -86,11 +93,6 @@ app.use('/user', sessionChecker, userRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
-});
-
-app.use(function (req, res, next) {
-  res.locals.messages = require('express-messages')(req, res);
-  next();
 });
 
 // error handler
