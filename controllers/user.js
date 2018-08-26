@@ -16,10 +16,13 @@ module.exports = {
     }).then(function (user) {
       if (!user || !user.checkPassword(req.body.password)) {
         req.flash('error', [{msg: 'Username or password is invalid!'}]);
-        return res.render('signin', {message: req.flash('error'), username: req.body.username, layout: false});
+        return res.render('signin', {message: req.flash('error'), username: req.body.username});
       }
       req.session.user = user.dataValues;
       res.redirect("/");
     });
+  },
+  getUser(req, res, next) {
+    res.render('user', {title: req.params.username});
   }
 };

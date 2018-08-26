@@ -14,9 +14,12 @@ router.post('/signin', [
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     req.flash('error', errors.array());
-    return res.render('signin', {message: req.flash('error'), username: req.body.username, layout: false});
+    return res.render('signin', {message: req.flash('error'), username: req.body.username});
   }
   next();
 }, userController.postSignIn);
+
+
+router.get('/:username', userController.getUser);
 
 module.exports = router;

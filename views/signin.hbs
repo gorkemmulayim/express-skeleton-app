@@ -5,24 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Sign In</title>
+
     <link rel="icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/signin.css">
 </head>
 <body class="text-center">
-<form action="/signin" class="form-signin" method="POST">
+
+<form action="/signin" class="form" method="POST">
     <img class="mb-4" src="/images/logo.png" alt="logo goes here" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <label for="inputUsername" class="sr-only">User name</label>
     {{#if username}}
-        <input type="username" name="username" id="inputUsername" class="form-control form-signin-username"
+        <input type="username" name="username" id="inputUsername" class="form-control form-username"
                placeholder="Username" value="{{username}}">
     {{else}}
-        <input type="username" name="username" id="inputUsername" class="form-control form-signin-username"
+        <input type="username" name="username" id="inputUsername" class="form-control form-username"
                placeholder="Username" autofocus>
     {{/if}}
     <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control form-signin-password"
+    <input type="password" name="password" id="inputPassword" class="form-control form-password"
            placeholder="Password" autofocus>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     {{#each message}}
