@@ -3,6 +3,7 @@ const config = require('../config/config');
 const DataTypes = Sequelize.DataTypes;
 const sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
 const User = require('../models/user')(sequelize, DataTypes);
+const bcrypt = require('bcrypt');
 
 module.exports = {
   getSignIn(req, res, next) {
@@ -45,15 +46,15 @@ module.exports = {
         });
       }
       User.update({
-        password: req.body.newPassword,
+        password: bcrypt.hashSync(req.body.newPassword, bcrypt.genSaltSync(10)),
       }, {
         where: {
           username: req.session.user.username
         }
       }).then(function (user) {
-        console.log(user)
+        req.session.user = user.dataValues;
+        res.render('user', {messages: [{message: 'Password changed successfully.', type: 'success'}]});
       });
-      return res.render('user', {messages: [{message: 'Password changed successfully.', type: 'success'}]});
     });
   }
 };

@@ -15,14 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'user',
     freezeTableName: true,
     timestamps: false,
-    hooks: {
-      beforeCreate: (user, options) => {
-        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
-      },
-      beforeUpdate: (user, options) => {
-        user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
-      }
-    },
   });
   User.prototype.checkPassword = function (password) {
     return password !== undefined && bcrypt.compareSync(password, this.password);
