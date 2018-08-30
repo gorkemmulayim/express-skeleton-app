@@ -10,13 +10,42 @@ const session = require('express-session');
 const Sequelize = require('sequelize');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const config = require('./config/config');
-
-const indexRouter = require('./routes/index');
-const userRouter = require('./routes/user');
-
-const app = express();
-
 const sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
+const Umzug = require('umzug');
+const migrations = new Umzug({
+  storage: "sequelize",
+
+  storageOptions: {
+    sequelize: sequelize
+  },
+
+  migrations: {
+    params: [
+      sequelize.getQueryInterface(),
+      Sequelize
+    ],
+    path: path.join(__dirname, "./migrations")
+  }
+});
+migrations.up();
+
+const seeders = new Umzug({
+  storage: "sequelize",
+
+  storageOptions: {
+    sequelize: sequelize
+  },
+
+  migrations: {
+    params: [
+      sequelize.getQueryInterface(),
+      Sequelize
+    ],
+    path: path.join(__dirname, "./seeders")
+  }
+});
+seeders.up();
+
 const sequelizeStore = new SequelizeStore({
   db: sequelize,
   checkExpirationInterval: 60 * 1000,
@@ -39,6 +68,11 @@ let sess = {
   store: sequelizeStore,
   unset: 'destroy'
 };
+
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
+
+const app = express();
 
 app.use(session(sess));
 
