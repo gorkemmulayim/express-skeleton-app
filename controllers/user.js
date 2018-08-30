@@ -6,25 +6,6 @@ const User = require('../models/user')(sequelize, DataTypes);
 const bcrypt = require('bcrypt');
 
 module.exports = {
-  getSignIn(req, res, next) {
-    res.render('signin');
-  },
-  postSignIn(req, res, next) {
-    User.find({
-      where: {
-        username: req.body.username
-      }
-    }).then(function (user) {
-      if (!user || !user.checkPassword(req.body.password)) {
-        return res.render('signin', {
-          messages: [{message: 'Username or password is invalid!', type: 'danger'}],
-          username: req.body.username
-        });
-      }
-      req.session.user = user.dataValues;
-      res.redirect("/");
-    });
-  },
   getUser(req, res, next) {
     res.render('user', {title: req.params.username});
   },

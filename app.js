@@ -58,12 +58,12 @@ app.use((req, res, next) => {
 
 const sessionChecker = (req, res, next) => {
   if (req.session.user) {
-    if (req.originalUrl === '/signin' || req.originalUrl === '/user/signin') {
+    if (req.originalUrl === '/signin') {
       return res.redirect('/');
     }
     return next();
   }
-  if (req.originalUrl === '/signin' || req.originalUrl === '/user/signin') {
+  if (req.originalUrl === '/signin') {
     return next();
   }
   return res.redirect('/signin');
