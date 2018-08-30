@@ -4,7 +4,7 @@ const {body, validationResult} = require('express-validator/check');
 const indexController = require('../controllers/index');
 
 router.get('/', (req, res, next) => {
-  res.render("index");
+  res.render("index", {title: 'Home'});
 });
 
 router.get('/signin', indexController.getSignIn);
