@@ -28,4 +28,8 @@ router.post('/signin', [
   next();
 }, indexController.postSignIn);
 
+router.get('/signout', indexController.getSignOut);
+
+router.post('/signout', indexController.postSignOut);
+
 module.exports = router;

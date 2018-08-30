@@ -17,10 +17,10 @@
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <label for="inputUsername" class="sr-only">User name</label>
     {{#if username}}
-        <input type="username" name="username" id="inputUsername" class="form-control form-username"
+        <input type="text" name="username" id="inputUsername" class="form-control form-username"
                placeholder="Username" value="{{username}}">
     {{else}}
-        <input type="username" name="username" id="inputUsername" class="form-control form-username"
+        <input type="text" name="username" id="inputUsername" class="form-control form-username"
                placeholder="Username" autofocus>
     {{/if}}
     <label for="inputPassword" class="sr-only">Password</label>

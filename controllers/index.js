@@ -23,5 +23,12 @@ module.exports = {
       req.session.user = user.dataValues;
       res.redirect("/");
     });
+  },
+  getSignOut(req, res, next) {
+    res.render('signout');
+  },
+  postSignOut(req, res, next) {
+    req.session.destroy();
+    res.redirect('/signin');
   }
 };

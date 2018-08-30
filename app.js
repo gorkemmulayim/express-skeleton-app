@@ -19,7 +19,7 @@ const app = express();
 const sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
 const sequelizeStore = new SequelizeStore({
   db: sequelize,
-  checkExpirationInterval: 10 * 60 * 1000,
+  checkExpirationInterval: 60 * 1000,
   expiration: 60 * 60 * 1000
 });
 sequelizeStore.sync();
@@ -82,7 +82,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
 app.use(express.static(path.join(__dirname, 'node_modules/jquery/dist')));
-app.use(express.static(path.join(__dirname, 'node_modules/popper.js/dist')));
+app.use(express.static(path.join(__dirname, 'node_modules/popper.js/dist/umd')));
 
 app.use('/', sessionChecker, indexRouter);
 app.use('/user', sessionChecker, userRouter);
