@@ -45,14 +45,14 @@ module.exports = {
           }]
         });
       }
+      let newPassword = bcrypt.hashSync(req.body.newPassword, bcrypt.genSaltSync(10));
       User.update({
-        password: bcrypt.hashSync(req.body.newPassword, bcrypt.genSaltSync(10)),
+        password: newPassword,
       }, {
         where: {
           username: req.session.user.username
         }
-      }).then(function (user) {
-        req.session.user = user.dataValues;
+      }).then(function (affectedCount, affectedRows) {
         res.render('user', {messages: [{message: 'Password changed successfully.', type: 'success'}]});
       });
     });

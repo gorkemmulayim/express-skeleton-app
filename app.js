@@ -6,7 +6,6 @@ const multer = require('multer');
 const path = require('path');
 const logger = require('morgan');
 
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const Sequelize = require('sequelize');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
@@ -25,9 +24,8 @@ const sequelizeStore = new SequelizeStore({
 });
 sequelizeStore.sync();
 
-app.use(cookieParser());
-app.use(session({
-  key: 'user_sid',
+let sess = {
+  key: 'sid',
   cookie: {
     expires: 60 * 60 * 1000
   },
@@ -37,10 +35,12 @@ app.use(session({
   proxy: true,
   resave: false,
   saveUninitialized: false,
-  secret: require('crypto').randomBytes(64).toString('hex'),
+  secret: 'secret',
   store: sequelizeStore,
   unset: 'destroy'
-}));
+};
+
+app.use(session(sess));
 
 app.use(function (req, res, next) {
   if (req.session.user) {
@@ -50,8 +50,8 @@ app.use(function (req, res, next) {
 });
 
 app.use((req, res, next) => {
-  if (req.cookies.user_sid && !req.session.user) {
-    res.clearCookie('user_sid');
+  if (!req.session.user) {
+    res.clearCookie('sid');
   }
   next();
 });
@@ -102,5 +102,10 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1);
+  sess.cookie.secure = true;
+}
 
 module.exports = app;
