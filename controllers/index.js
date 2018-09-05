@@ -1,7 +1,6 @@
-const Sequelize = require('sequelize');
-const config = require('../config/config');
+const Sequelize = require('../models').Sequelize;
 const DataTypes = Sequelize.DataTypes;
-const sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
+const sequelize = require('../models/index').sequelize;
 const User = require('../models/user')(sequelize, DataTypes);
 
 module.exports = {
@@ -21,7 +20,9 @@ module.exports = {
         });
       }
       req.session.user = user.dataValues;
-      res.redirect("/");
+      req.session.save(function () {
+        res.redirect("/");
+      });
     });
   },
   getSignOut(req, res, next) {

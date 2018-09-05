@@ -1,7 +1,6 @@
-const Sequelize = require('sequelize');
-const config = require('../config/config');
+const Sequelize = require('../models').Sequelize;
 const DataTypes = Sequelize.DataTypes;
-const sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
+const sequelize = require('../models/index').sequelize;
 const User = require('../models/user')(sequelize, DataTypes);
 const bcrypt = require('bcrypt');
 

@@ -1,24 +1,19 @@
 const createError = require('http-errors');
 const express = require('express');
 const hbs = require('hbs');
-const crypto = require('crypto');
 const multer = require('multer');
 const path = require('path');
 const logger = require('morgan');
 
 const session = require('express-session');
-const Sequelize = require('sequelize');
-const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const config = require('./config/config');
-const sequelize = new Sequelize(config[process.env.NODE_ENV || 'development']);
+const Sequelize = require('./models').Sequelize;
+const sequelize = require('./models').sequelize;
 const Umzug = require('umzug');
-const migrations = new Umzug({
+const models = new Umzug({
   storage: "sequelize",
-
   storageOptions: {
     sequelize: sequelize
   },
-
   migrations: {
     params: [
       sequelize.getQueryInterface(),
@@ -27,25 +22,24 @@ const migrations = new Umzug({
     path: path.join(__dirname, "./migrations")
   }
 });
-migrations.up();
-
-const seeders = new Umzug({
-  storage: "sequelize",
-
-  storageOptions: {
-    sequelize: sequelize
-  },
-
-  migrations: {
-    params: [
-      sequelize.getQueryInterface(),
-      Sequelize
-    ],
-    path: path.join(__dirname, "./seeders")
-  }
+models.up().then(function (migrations) {
+  let seeders = new Umzug({
+    storage: "sequelize",
+    storageOptions: {
+      sequelize: sequelize
+    },
+    migrations: {
+      params: [
+        sequelize.getQueryInterface(),
+        Sequelize
+      ],
+      path: path.join(__dirname, "./seeders")
+    }
+  });
+  seeders.up();
 });
-seeders.up();
 
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sequelizeStore = new SequelizeStore({
   db: sequelize,
   checkExpirationInterval: 60 * 1000,
@@ -58,10 +52,6 @@ let sess = {
   cookie: {
     expires: 60 * 60 * 1000
   },
-  genid: function () {
-    return crypto.randomBytes(64).toString('hex');
-  },
-  proxy: true,
   resave: false,
   saveUninitialized: false,
   secret: 'secret',

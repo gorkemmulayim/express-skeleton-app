@@ -16,10 +16,11 @@ module.exports = {
     operatorsAliases: Sequelize.Op
   },
   production: {
-    logging: console.log,
-    database: 'app',
-    dialect: 'sqlite',
-    storage: 'production.sqlite',
+    dialect: 'postgres',
+    ssl: true,
+    dialectOptions: {
+      ssl: true
+    },
     operatorsAliases: Sequelize.Op
   }
 };
