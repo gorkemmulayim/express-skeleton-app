@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Sign up</title>
+
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/signup.css">
+</head>
+<body class="text-center">
+
+<div class="container-fluid h-100">
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <form class="form" method="POST">
+                <img class="mb-4" src="/images/logo.png" width="64" height="64">
+                <h1 class="h3 mb-3 font-weight-normal">Create your personal account</h1>
+                <label for="inputUsername" class="sr-only">Username</label>
+                {{#if username}}
+                    <input type="text" name="username" id="inputUsername" class="form-control form-username"
+                           placeholder="Username" value="{{username}}">
+                {{else}}
+                    <input type="text" name="username" id="inputUsername" class="form-control form-username"
+                           placeholder="Username" autofocus>
+                {{/if}}
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" name="password" id="inputPassword"
+                       class="form-control form-password"
+                       placeholder="Password" autofocus>
+                <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
+                <input type="password" name="confirmPassword" id="inputConfirmPassword"
+                       class="form-control form-confirm-password"
+                       placeholder="Confirm Password" autofocus>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+                {{#each messages}}
+                    <div class="alert alert-{{this.type}} alert-dismissible fade show" role="alert">
+                        {{this.message}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {{/each}}
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/jquery-slim.min.js"><\/script>')</script>
+<script src="/popper.min.js"></script>
+<script src="/bootstrap.min.js"></script>
+</body>
+</html>

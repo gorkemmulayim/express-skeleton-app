@@ -7,6 +7,8 @@ router.get('/', (req, res, next) => {
   res.render("index", {title: 'Home'});
 });
 
+router.get('/signup', indexController.getSignUp);
+
 router.get('/signin', indexController.getSignIn);
 
 router.post('/signin', [

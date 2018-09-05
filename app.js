@@ -82,12 +82,12 @@ app.use((req, res, next) => {
 
 const sessionChecker = (req, res, next) => {
   if (req.session.user) {
-    if (req.originalUrl === '/signin') {
+    if (req.originalUrl === '/signin' || req.originalUrl === '/signup') {
       return res.redirect('/');
     }
     return next();
   }
-  if (req.originalUrl === '/signin') {
+  if (req.originalUrl === '/signin' || req.originalUrl === '/signup') {
     return next();
   }
   return res.redirect('/signin');

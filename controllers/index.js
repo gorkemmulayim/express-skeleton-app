@@ -4,6 +4,9 @@ const sequelize = require('../models/index').sequelize;
 const User = require('../models/user')(sequelize, DataTypes);
 
 module.exports = {
+  getSignUp(req, res, next) {
+    res.render('signup');
+  },
   getSignIn(req, res, next) {
     res.render('signin');
   },
