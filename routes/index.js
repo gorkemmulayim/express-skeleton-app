@@ -9,6 +9,27 @@ router.get('/', (req, res, next) => {
 
 router.get('/signup', indexController.getSignUp);
 
+router.post('/signup', [
+  body('username')
+      .trim().not().isEmpty().withMessage('Username field can not be empty!'),
+  body('password')
+      .trim().not().isEmpty().withMessage('Password field can not be empty!'),
+  body('confirmPassword')
+      .trim().not().isEmpty().withMessage('Confirm password field can not be empty!'),
+], (req, res, next) => {
+  let errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    let messages = errors.array();
+    messages.forEach(function (message) {
+      message['message'] = message['msg'];
+      delete message['msg'];
+      message.type = 'danger';
+    });
+    return res.render('signup', {messages: messages, username: req.body.username});
+  }
+  next();
+}, indexController.postSignUp);
+
 router.get('/signin', indexController.getSignIn);
 
 router.post('/signin', [
